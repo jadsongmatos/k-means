@@ -25,17 +25,28 @@ y = df['diabetes']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+plt.scatter(df['age'], df['bmi'], c=df['diabetes'], alpha=0.6)
+plt.xlabel('age')
+plt.ylabel('bmi')
+plt.show()
+
 # Normalizando os dados
 scaler = StandardScaler()
 
 scaled_X_train = scaler.fit_transform(X_train)
 scaled_X_test = scaler.transform(X_test)
 
-km = KMeans(n_clusters=2)
+km = KMeans(n_clusters=2,n_init=10)
 km.fit(scaled_X_train)
 
 y_train_pred = km.predict(scaled_X_train)
 y_test_pred = km.predict(scaled_X_test)
+
+# Visualizando os clusters
+plt.scatter(X_train['age'], X_train['bmi'], c=y_train_pred, alpha=0.6)
+plt.xlabel('age')
+plt.ylabel('bmi')
+plt.show()
 
 # Create an instance of the DecisionTreeClassifier
 model = tree.DecisionTreeClassifier(max_depth=22, min_samples_split=10, min_samples_leaf=5, max_leaf_nodes=22)
